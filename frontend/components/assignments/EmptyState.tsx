@@ -5,46 +5,67 @@ import { Plus } from 'lucide-react';
 
 export default function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-      {/* Illustration */}
-      <div className="relative w-40 h-36 mb-6">
-        {/* Paper stack */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-28 h-32 bg-gray-100 rounded-lg border border-gray-200 rotate-3" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-28 h-32 bg-white rounded-lg border border-gray-200" />
-        {/* Lines on paper */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-20 space-y-1.5">
-          <div className="h-1.5 bg-gray-200 rounded-full" />
-          <div className="h-1.5 bg-gray-200 rounded-full w-4/5" />
-          <div className="h-1.5 bg-gray-200 rounded-full w-3/5" />
+    <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+      {/* Illustration — matches Figma */}
+      <div className="relative w-72 h-60 mb-8 select-none">
+        {/* Large lavender background circle */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 rounded-full bg-[#E8E6F0]" />
+
+        {/* Back document card (rotated) */}
+        <div className="absolute top-[38px] left-[64px] w-[108px] h-[128px] bg-[#F0EFF8] rounded-xl border border-[#DDD9F0] rotate-[-6deg] shadow-sm" />
+
+        {/* Front document card */}
+        <div className="absolute top-[30px] left-[72px] w-[108px] h-[128px] bg-white rounded-xl border border-gray-200 shadow-md flex flex-col gap-2 pt-5 px-4">
+          <div className="h-[10px] bg-gray-800 rounded-full w-3/4" />
+          <div className="h-[7px] bg-gray-200 rounded-full w-full mt-1" />
+          <div className="h-[7px] bg-gray-200 rounded-full w-5/6" />
+          <div className="h-[7px] bg-gray-200 rounded-full w-4/6" />
+          <div className="h-[7px] bg-gray-200 rounded-full w-5/6" />
+          <div className="h-[7px] bg-gray-200 rounded-full w-3/6" />
         </div>
-        {/* Magnifier */}
-        <div className="absolute top-0 right-4">
-          <div className="relative">
-            <div className="w-12 h-12 rounded-full border-[3px] border-gray-400 bg-gray-50 flex items-center justify-center">
-              <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
-            </div>
-            <div className="absolute bottom-0 right-0 w-4 h-1 bg-gray-400 rounded-full rotate-45 translate-x-2 translate-y-1" />
+
+        {/* Floating mini card top-right */}
+        <div className="absolute top-[22px] right-[40px] w-[52px] h-[26px] bg-gray-200 rounded-lg flex items-center gap-1.5 px-2">
+          <div className="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0" />
+          <div className="h-2 bg-gray-400 rounded-full flex-1" />
+        </div>
+
+        {/* Magnifying glass */}
+        <div className="absolute bottom-[14px] right-[24px] w-[90px] h-[90px]">
+          <div className="absolute inset-0 rounded-full border-[6px] border-[#A89EC8] bg-[#EAE8F4]/60" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <line x1="10" y1="10" x2="26" y2="26" stroke="#EF4444" strokeWidth="5" strokeLinecap="round" />
+              <line x1="26" y1="10" x2="10" y2="26" stroke="#EF4444" strokeWidth="5" strokeLinecap="round" />
+            </svg>
           </div>
+          <div className="absolute bottom-[-12px] right-[-10px] w-[28px] h-[8px] bg-[#A89EC8] rounded-full rotate-[-40deg] origin-top-left" />
         </div>
-        {/* X mark */}
-        <div className="absolute top-2 right-6 w-7 h-7 rounded-full bg-red-500 flex items-center justify-center">
-          <span className="text-white text-xs font-bold">✕</span>
-        </div>
-        {/* Sparkles */}
-        <div className="absolute top-1 left-3 text-primary text-lg">✦</div>
-        <div className="absolute top-6 right-0 text-blue-400 text-sm">✦</div>
-        <div className="absolute bottom-4 left-0 text-blue-300 text-xs">✦</div>
+
+        {/* Blue dot */}
+        <div className="absolute top-[80px] right-[14px] w-3 h-3 rounded-full bg-[#60A5FA]" />
+
+        {/* Sparkle bottom-left */}
+        <svg className="absolute bottom-[48px] left-[24px]" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="#60A5FA" />
+        </svg>
+
+        {/* Pen squiggle top-left */}
+        <svg className="absolute top-[32px] left-[28px]" width="48" height="40" viewBox="0 0 48 40" fill="none">
+          <path d="M44 2 C36 2 8 18 4 36" stroke="#1F2937" strokeWidth="3" strokeLinecap="round" fill="none" />
+          <circle cx="44" cy="2" r="3" fill="#1F2937" />
+        </svg>
       </div>
 
-      <h3 className="text-base font-semibold text-gray-900 mb-2">No assignments yet</h3>
-      <p className="text-sm text-gray-500 max-w-xs mb-6 leading-relaxed">
-        Create your first assignment to start collecting and grading student submissions. You can set
-        up rubrics, define marking criteria, and let AI assist with grading.
+      <h3 className="text-[17px] font-bold text-gray-900 mb-2">No assignments yet</h3>
+      <p className="text-sm text-gray-500 max-w-sm mb-7 leading-relaxed">
+        Create your first assignment to start collecting and grading student submissions.
+        You can set up rubrics, define marking criteria, and let AI assist with grading.
       </p>
 
       <Link
         href="/assignments/new"
-        className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-lg transition-colors"
+        className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-full transition-colors shadow-sm"
       >
         <Plus size={16} strokeWidth={2.5} />
         Create Your First Assignment

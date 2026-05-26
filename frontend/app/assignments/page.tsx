@@ -28,14 +28,13 @@ export default function AssignmentsPage() {
         <TopBar title="Assignment" showBack={false} />
 
         <main className="flex-1 p-6">
-          {/* Page Header */}
-          <div className="mb-5">
-            <h2 className="text-xl font-bold text-gray-900">Assignments</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Manage and create assignments for your classes.</p>
-          </div>
-
           {assignments.length > 0 ? (
             <>
+              {/* Page Header */}
+              <div className="mb-5">
+                <h2 className="text-xl font-bold text-gray-900">Assignments</h2>
+                <p className="text-sm text-gray-500 mt-0.5">Manage and create assignments for your classes.</p>
+              </div>
               {/* Search & Filter Bar */}
               <div className="flex items-center gap-3 mb-5">
                 <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 hover:border-gray-300 cursor-pointer transition-colors">
@@ -75,7 +74,7 @@ export default function AssignmentsPage() {
               </div>
             </>
           ) : (
-            <div className="bg-white rounded-2xl border border-gray-200 min-h-[400px] flex items-center justify-center">
+            <div className="flex items-center justify-center min-h-[460px]">
               <EmptyState />
             </div>
           )}

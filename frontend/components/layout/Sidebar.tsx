@@ -34,15 +34,17 @@ export default function Sidebar() {
         <span className="text-lg font-bold text-gray-900">VedaAI</span>
       </div>
 
-      {/* Create Assignment CTA */}
+      {/* Create Assignment CTA — dark pill with orange gradient ring */}
       <div className="px-4 py-4">
-        <Link
-          href="/assignments/new"
-          className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-lg transition-colors"
-        >
-          <Plus size={16} strokeWidth={2.5} />
-          Create Assignment
-        </Link>
+        <div className="p-[1.5px] rounded-full bg-gradient-to-r from-orange-500 via-orange-400 to-orange-600">
+          <Link
+            href="/assignments/new"
+            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-full transition-colors"
+          >
+            <span className="text-base leading-none">✦</span>
+            Create Assignment
+          </Link>
+        </div>
       </div>
 
       {/* Navigation */}
@@ -60,13 +62,13 @@ export default function Sidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                 isActive
-                  ? 'bg-orange-50 text-primary'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-gray-100 text-gray-900'
+                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
               )}
             >
               <Icon
                 size={18}
-                className={cn(isActive ? 'text-primary' : 'text-gray-500')}
+                className={cn(isActive ? 'text-gray-900' : 'text-gray-400')}
               />
               <span className="flex-1">{label}</span>
               {badge !== undefined && (
@@ -88,13 +90,13 @@ export default function Sidebar() {
           <Settings size={16} />
           Settings
         </Link>
-        <div className="flex items-center gap-3 px-4 py-4">
-          <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden flex-shrink-0">
-            <span className="text-primary font-semibold text-sm">D</span>
+        <div className="flex items-center gap-3 px-4 py-4 mx-1 mb-1 rounded-xl bg-gray-50">
+          <div className="w-10 h-10 rounded-full bg-amber-100 border border-amber-200 flex items-center justify-center overflow-hidden flex-shrink-0">
+            <span className="text-lg">🏫</span>
           </div>
           <div className="min-w-0">
             <p className="text-sm font-semibold text-gray-900 truncate">Delhi Public School</p>
-            <p className="text-xs text-gray-500 truncate">Bokaro Steel City</p>
+            <p className="text-xs text-gray-400 truncate">Bokaro Steel City</p>
           </div>
         </div>
       </div>
