@@ -10,6 +10,9 @@ import fs from 'fs';
 
 const processGenerationAsync = async (assignmentId: string, config: any) => {
   try {
+    // Wait 2 seconds to ensure the frontend has time to connect to the WebSocket after page load
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
     emitToJob(assignmentId, 'generation-started', { assignmentId, progress: 0 });
     await Assignment.findByIdAndUpdate(assignmentId, { status: 'processing' });
 
@@ -51,6 +54,7 @@ const processGenerationAsync = async (assignmentId: string, config: any) => {
       paper,
     });
   } catch (err: any) {
+    console.error('Generation Failed:', err);
     await Assignment.findByIdAndUpdate(assignmentId, { status: 'failed' });
     emitToJob(assignmentId, 'generation-failed', {
       assignmentId,

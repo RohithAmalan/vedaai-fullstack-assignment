@@ -13,7 +13,7 @@ import { ToastContainer } from '@/components/common/Toast';
 import { useAssignmentStore } from '@/store/useAssignmentStore';
 import { useJobProgress } from '@/hooks/useJobProgress';
 import { useToast } from '@/hooks/useToast';
-import { getAssignmentPaper, regenerateAssignment } from '@/services/api';
+import { getAssignmentPaper, regenerateAssignment, getAssignmentStatus } from '@/services/api';
 import { cn } from '@/lib/utils';
 
 const PDFDownloadButton = dynamic(() => import('@/components/pdf/PDFDownloadButton'), { ssr: false });
@@ -64,18 +64,28 @@ export default function AssignmentOutputPage() {
 
     const poll = setInterval(async () => {
       try {
-        const res = await getAssignmentPaper(id);
-        if (res.paper) {
-          setGeneratedPaper(res.paper);
-          if (res.assignment) setCurrentAssignment(res.assignment);
-          setGenerationStatus('completed');
-          setProgress(100);
+        const statusRes = await getAssignmentStatus(id);
+        
+        if (statusRes.status === 'failed') {
+          setGenerationStatus('failed');
           clearInterval(poll);
+          return;
+        }
+
+        if (statusRes.status === 'completed') {
+          const res = await getAssignmentPaper(id);
+          if (res.paper) {
+            setGeneratedPaper(res.paper);
+            if (res.assignment) setCurrentAssignment(res.assignment);
+            setGenerationStatus('completed');
+            setProgress(100);
+            clearInterval(poll);
+          }
         }
       } catch {
         // Not ready yet
       }
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(poll);
   }, [id, generatedPaper, generationStatus, setGeneratedPaper, setGenerationStatus, setProgress]);
