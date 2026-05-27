@@ -30,6 +30,7 @@ export default function AssignmentOutputPage() {
     generationStatus,
     progress,
     generatedPaper,
+    error,
     currentAssignmentId,
     currentAssignment,
     setGeneratedPaper,
@@ -37,6 +38,7 @@ export default function AssignmentOutputPage() {
     setGenerationStatus,
     setProgress,
     setCurrentAssignment,
+    setError,
   } = useAssignmentStore();
 
   useEffect(() => {
@@ -68,6 +70,7 @@ export default function AssignmentOutputPage() {
         
         if (statusRes.status === 'failed') {
           setGenerationStatus('failed');
+          if (statusRes.error) useAssignmentStore.getState().setError(statusRes.error);
           clearInterval(poll);
           return;
         }
@@ -93,6 +96,7 @@ export default function AssignmentOutputPage() {
   const handleRegenerate = async () => {
     setRegenerating(true);
     setGenerationStatus('generating');
+    setError(null);
     setProgress(0);
     setGeneratedPaper(null);
     try {
@@ -180,7 +184,12 @@ export default function AssignmentOutputPage() {
                   <span className="text-red-500 text-2xl font-bold">✕</span>
                 </div>
                 <h3 className="text-base font-semibold text-gray-900 mb-1">Generation Failed</h3>
-                <p className="text-sm text-gray-500 mb-5">Something went wrong while generating.</p>
+                <p className="text-sm text-gray-500 mb-2">Something went wrong while generating.</p>
+                {error && (
+                  <div className="text-xs text-red-600 bg-red-50 p-3 rounded-lg mb-5 max-w-sm mx-auto break-words font-mono">
+                    {error}
+                  </div>
+                )}
                 <button
                   onClick={handleRegenerate}
                   className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-full transition-colors mx-auto"

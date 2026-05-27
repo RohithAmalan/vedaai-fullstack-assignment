@@ -11,6 +11,7 @@ interface AssignmentStore {
   jobId: string | null;
   generationStatus: GenerationStatus;
   progress: number;
+  error: string | null;
   generatedPaper: GeneratedPaper | null;
   assignments: Assignment[];
   currentAssignment: Assignment | null;
@@ -22,6 +23,7 @@ interface AssignmentStore {
   setJobId: (id: string | null) => void;
   setGenerationStatus: (status: GenerationStatus) => void;
   setProgress: (progress: number) => void;
+  setError: (error: string | null) => void;
   setGeneratedPaper: (paper: GeneratedPaper | null) => void;
   setAssignments: (assignments: Assignment[]) => void;
   setCurrentAssignment: (assignment: Assignment | null) => void;
@@ -36,6 +38,7 @@ const initialState = {
   jobId: null,
   generationStatus: 'idle' as GenerationStatus,
   progress: 0,
+  error: null,
   generatedPaper: null,
   assignments: [],
   currentAssignment: null,
@@ -51,6 +54,7 @@ export const useAssignmentStore = create<AssignmentStore>((set) => ({
   setJobId: (id) => set({ jobId: id }),
   setGenerationStatus: (status) => set({ generationStatus: status }),
   setProgress: (progress) => set({ progress }),
+  setError: (error) => set({ error }),
   setGeneratedPaper: (paper) => set({ generatedPaper: paper }),
   setAssignments: (assignments) => set({ assignments }),
   setCurrentAssignment: (assignment) => set({ currentAssignment: assignment }),

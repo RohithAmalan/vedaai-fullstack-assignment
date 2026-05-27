@@ -38,9 +38,10 @@ export const useJobProgress = (assignmentId: string | null) => {
   );
 
   const handleFailed = useCallback(
-    (data: { assignmentId: string }) => {
+    (data: { assignmentId: string; error?: string }) => {
       if (data.assignmentId === assignmentId) {
         setGenerationStatus('failed');
+        if (data.error) useAssignmentStore.getState().setError(data.error);
       }
     },
     [assignmentId, setGenerationStatus]

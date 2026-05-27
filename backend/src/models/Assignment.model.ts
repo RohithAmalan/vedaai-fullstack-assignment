@@ -13,6 +13,7 @@ export interface IAssignment extends Document {
   filePath?: string;
   status: 'pending' | 'processing' | 'completed' | 'failed';
   jobId?: string;
+  error?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,6 +35,7 @@ const AssignmentSchema = new Schema<IAssignment>(
       default: 'pending',
     },
     jobId: { type: String },
+    error: { type: String },
   },
   { timestamps: true }
 );

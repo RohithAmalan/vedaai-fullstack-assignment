@@ -55,7 +55,10 @@ const processGenerationAsync = async (assignmentId: string, config: any) => {
     });
   } catch (err: any) {
     console.error('Generation Failed:', err);
-    await Assignment.findByIdAndUpdate(assignmentId, { status: 'failed' });
+    await Assignment.findByIdAndUpdate(assignmentId, { 
+      status: 'failed', 
+      error: err.message || 'Unknown error' 
+    });
     emitToJob(assignmentId, 'generation-failed', {
       assignmentId,
       error: err.message,
@@ -115,7 +118,7 @@ export const getAssignmentStatus = async (req: Request, res: Response): Promise<
     return;
   }
 
-  res.json({ success: true, status: assignment.status, jobId: assignment.jobId });
+  res.json({ success: true, status: assignment.status, jobId: assignment.jobId, error: assignment.error });
 };
 
 export const getAssignmentPaper = async (req: Request, res: Response): Promise<void> => {

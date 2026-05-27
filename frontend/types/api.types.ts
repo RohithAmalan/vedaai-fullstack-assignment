@@ -23,8 +23,9 @@ export interface UploadFileResponse {
 
 export interface AssignmentStatusResponse {
   success: boolean;
-  status: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
   jobId?: string;
+  error?: string;
 }
 
 export interface AssignmentPaperResponse {

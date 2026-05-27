@@ -76,6 +76,7 @@ export default function AssignmentForm() {
   const onSubmit = async (values: FormValues) => {
     setSubmitting(true);
     setGenerationStatus('generating');
+    useAssignmentStore.getState().setError(null);
     try {
       const res = await createAssignment({
         ...values,
