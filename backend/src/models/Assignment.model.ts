@@ -11,6 +11,7 @@ export interface IAssignment extends Document {
   additionalInstructions?: string;
   fileId?: string;
   filePath?: string;
+  fileContext?: string;
   status: 'pending' | 'processing' | 'completed' | 'failed';
   jobId?: string;
   error?: string;
@@ -29,6 +30,7 @@ const AssignmentSchema = new Schema<IAssignment>(
     additionalInstructions: { type: String, trim: true },
     fileId: { type: String },
     filePath: { type: String },
+    fileContext: { type: String },
     status: {
       type: String,
       enum: ['pending', 'processing', 'completed', 'failed'],

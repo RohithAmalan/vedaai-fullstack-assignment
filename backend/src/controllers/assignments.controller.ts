@@ -16,18 +16,8 @@ const processGenerationAsync = async (assignmentId: string, config: any) => {
     emitToJob(assignmentId, 'generation-started', { assignmentId, progress: 0 });
     await Assignment.findByIdAndUpdate(assignmentId, { status: 'processing' });
 
-    let extractedText;
-    if (config.fileId) {
-      const files = fs.readdirSync(os.tmpdir());
-      const matchingFile = files.find(f => f.startsWith(config.fileId));
-      if (matchingFile) {
-        try {
-          extractedText = await extractTextFromFile(path.join(os.tmpdir(), matchingFile));
-        } catch {
-          extractedText = undefined;
-        }
-      }
-    }
+    const assignmentDoc = await Assignment.findById(assignmentId).lean();
+    const extractedText = assignmentDoc?.fileContext;
 
     emitToJob(assignmentId, 'generation-progress', { assignmentId, progress: 30 });
     const paper = await generateQuestionPaper(config, extractedText);
@@ -72,6 +62,19 @@ export const createAssignment = async (req: Request, res: Response): Promise<voi
     numberOfQuestions, marksPerQuestion, additionalInstructions, fileId,
   } = req.body;
 
+  let extractedText;
+  if (fileId) {
+    const files = fs.readdirSync(os.tmpdir());
+    const matchingFile = files.find(f => f.startsWith(fileId));
+    if (matchingFile) {
+      try {
+        extractedText = await extractTextFromFile(path.join(os.tmpdir(), matchingFile));
+      } catch {
+        extractedText = undefined;
+      }
+    }
+  }
+
   const assignment = await Assignment.create({
     title,
     subject,
@@ -82,6 +85,7 @@ export const createAssignment = async (req: Request, res: Response): Promise<voi
     additionalInstructions,
     fileId,
     filePath: fileId ? `uploads/${fileId}` : undefined,
+    fileContext: extractedText,
     status: 'pending',
   });
 
