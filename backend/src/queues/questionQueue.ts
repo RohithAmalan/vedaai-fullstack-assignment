@@ -1,8 +1,12 @@
 import Redis from 'ioredis';
 import { Queue } from 'bullmq';
 
-const redisConnection = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
+const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+
+// Upstash uses rediss:// (TLS) — ioredis needs tls option enabled for it
+const redisConnection = new Redis(redisUrl, {
   maxRetriesPerRequest: null,
+  ...(redisUrl.startsWith('rediss://') ? { tls: {} } : {}),
 });
 
 export const questionGenerationQueue = new Queue('question-generation', {
