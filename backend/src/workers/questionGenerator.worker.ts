@@ -11,8 +11,6 @@ import { extractTextFromFile } from '../services/pdfService';
 import { emitToJob } from '../socket/socketServer';
 import { JobPayload } from '../types';
 
-connectDB();
-
 const worker = new Worker<JobPayload>(
   'question-generation',
   async (job: Job<JobPayload>) => {
