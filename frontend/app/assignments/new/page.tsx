@@ -68,6 +68,7 @@ export default function NewAssignmentPage() {
 
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
+  const [classLevel, setClassLevel] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [dragOver, setDragOver] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<{ name: string; size: number; id: string } | null>(null);
@@ -182,6 +183,7 @@ export default function NewAssignmentPage() {
       const res = await createAssignment({
         title,
         subject,
+        classLevel,
         dueDate,
         questionTypes: types,
         numberOfQuestions: totalQuestions,
@@ -229,9 +231,9 @@ export default function NewAssignmentPage() {
                 <h2 className="text-[16px] lg:text-[18px] font-bold text-gray-900 mb-0.5">Assignment Details</h2>
                 <p className="text-[12px] lg:text-[13px] text-gray-500 mb-6 lg:mb-8">Basic information about your assignment</p>
 
-                {/* Assignment Name & Subject */}
+                {/* Assignment Name, Subject, Class Level */}
                 <div className="flex flex-col sm:flex-row gap-5 mb-8">
-                  <div className="flex-1">
+                  <div className="flex-[2]">
                     <label className="block text-[13.5px] font-bold text-gray-900 mb-2">Assignment Name</label>
                     <input
                       type="text"
@@ -248,6 +250,16 @@ export default function NewAssignmentPage() {
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
                       placeholder="e.g. English"
+                      className="w-full px-5 py-3.5 rounded-[20px] bg-white border border-gray-100 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] text-[13.5px] outline-none focus:border-gray-300 transition-colors placeholder:text-gray-400 text-gray-900"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-[13.5px] font-bold text-gray-900 mb-2">Class/Grade</label>
+                    <input
+                      type="text"
+                      value={classLevel}
+                      onChange={(e) => setClassLevel(e.target.value)}
+                      placeholder="e.g. 5th Std"
                       className="w-full px-5 py-3.5 rounded-[20px] bg-white border border-gray-100 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] text-[13.5px] outline-none focus:border-gray-300 transition-colors placeholder:text-gray-400 text-gray-900"
                     />
                   </div>

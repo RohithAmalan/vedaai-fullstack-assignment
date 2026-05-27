@@ -15,10 +15,11 @@ ${fileText ? 'CRITICAL INSTRUCTION: You MUST generate all questions STRICTLY bas
 
 Subject: ${config.subject}
 Title: ${config.title}
+${config.classLevel ? `Class Level: ${config.classLevel}` : ''}
 Total Questions: ${config.numberOfQuestions}
 Question Types: ${config.questionTypes.join(', ')}
 Sections: ${sections.join(', ')}
-Difficulty Distribution: 40% Easy, 40% Medium, 20% Hard
+Difficulty Distribution: 30% Easy, 40% Medium, 30% Hard
 ${config.additionalInstructions ? `Additional Instructions: ${config.additionalInstructions}` : ''}
 ${contextBlock}
 
