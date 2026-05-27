@@ -232,7 +232,7 @@ export default function NewAssignmentPage() {
                 {/* Assignment Name & Subject */}
                 <div className="flex flex-col sm:flex-row gap-5 mb-8">
                   <div className="flex-1">
-                    <label className="block text-[13.5px] font-bold text-gray-900 mb-2">Assignment Name</label>
+                    <label className="block text-[13.5px] font-bold text-gray-900 mb-2">Assignment Name <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       value={title}
@@ -242,7 +242,7 @@ export default function NewAssignmentPage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <label className="block text-[13.5px] font-bold text-gray-900 mb-2">Subject</label>
+                    <label className="block text-[13.5px] font-bold text-gray-900 mb-2">Subject <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       value={subject}
@@ -310,7 +310,7 @@ export default function NewAssignmentPage() {
 
               {/* Due Date */}
               <div className="mb-8 relative">
-                <label className="block text-[13.5px] font-bold text-gray-900 mb-2">Due Date</label>
+                <label className="block text-[13.5px] font-bold text-gray-900 mb-2">Due Date <span className="text-red-500">*</span></label>
                 <div className="relative w-full">
                   <input
                     type="date"
@@ -333,7 +333,7 @@ export default function NewAssignmentPage() {
                 {/* Column headers */}
                 <div className="flex items-center mb-4 px-2">
                   <div className="flex-1">
-                    <span className="text-[13.5px] font-bold text-gray-900">Question Type</span>
+                    <span className="text-[13.5px] font-bold text-gray-900">Question Type <span className="text-red-500">*</span></span>
                   </div>
                   <span className="text-[13px] font-bold text-gray-900 w-[140px] text-center">No. of Questions</span>
                   <span className="text-[13px] font-bold text-gray-900 w-[110px] text-center">Marks</span>

@@ -1,8 +1,63 @@
 import { Request, Response } from 'express';
 import Assignment from '../models/Assignment.model';
 import GeneratedPaper from '../models/GeneratedPaper.model';
-import { questionGenerationQueue } from '../queues/questionQueue';
 import { emitToJob } from '../socket/socketServer';
+import { generateQuestionPaper } from '../services/groqService';
+import { extractTextFromFile } from '../services/pdfService';
+import path from 'path';
+import os from 'os';
+import fs from 'fs';
+
+const processGenerationAsync = async (assignmentId: string, config: any) => {
+  try {
+    emitToJob(assignmentId, 'generation-started', { assignmentId, progress: 0 });
+    await Assignment.findByIdAndUpdate(assignmentId, { status: 'processing' });
+
+    let extractedText;
+    if (config.fileId) {
+      const files = fs.readdirSync(os.tmpdir());
+      const matchingFile = files.find(f => f.startsWith(config.fileId));
+      if (matchingFile) {
+        try {
+          extractedText = await extractTextFromFile(path.join(os.tmpdir(), matchingFile));
+        } catch {
+          extractedText = undefined;
+        }
+      }
+    }
+
+    emitToJob(assignmentId, 'generation-progress', { assignmentId, progress: 30 });
+    const paper = await generateQuestionPaper(config, extractedText);
+
+    emitToJob(assignmentId, 'generation-progress', { assignmentId, progress: 70 });
+    const existing = await GeneratedPaper.findOne({ assignmentId });
+    let savedPaper;
+
+    if (existing) {
+      savedPaper = await GeneratedPaper.findByIdAndUpdate(
+        existing._id,
+        { ...paper, assignmentId },
+        { new: true }
+      );
+    } else {
+      savedPaper = await GeneratedPaper.create({ ...paper, assignmentId });
+    }
+
+    await Assignment.findByIdAndUpdate(assignmentId, { status: 'completed' });
+    emitToJob(assignmentId, 'generation-progress', { assignmentId, progress: 100 });
+    emitToJob(assignmentId, 'generation-complete', {
+      assignmentId,
+      paperId: savedPaper?._id,
+      paper,
+    });
+  } catch (err: any) {
+    await Assignment.findByIdAndUpdate(assignmentId, { status: 'failed' });
+    emitToJob(assignmentId, 'generation-failed', {
+      assignmentId,
+      error: err.message,
+    });
+  }
+};
 
 export const createAssignment = async (req: Request, res: Response): Promise<void> => {
   const {
@@ -23,35 +78,27 @@ export const createAssignment = async (req: Request, res: Response): Promise<voi
     status: 'pending',
   });
 
-  const job = await questionGenerationQueue.add(
-    'generate-questions',
-    {
-      assignmentId: String(assignment._id),
-      config: {
-        title,
-        subject,
-        dueDate,
-        questionTypes,
-        numberOfQuestions: Number(numberOfQuestions),
-        marksPerQuestion: Number(marksPerQuestion),
-        additionalInstructions,
-        fileId,
-      },
-    },
-    { jobId: `assignment-${assignment._id}` }
-  );
+  const assignmentIdStr = String(assignment._id);
+  const jobId = `job-${Date.now()}`;
+  
+  processGenerationAsync(assignmentIdStr, {
+    title, subject, dueDate, questionTypes,
+    numberOfQuestions: Number(numberOfQuestions),
+    marksPerQuestion: Number(marksPerQuestion),
+    additionalInstructions, fileId,
+  });
 
-  await Assignment.findByIdAndUpdate(assignment._id, { jobId: String(job.id) });
+  await Assignment.findByIdAndUpdate(assignment._id, { jobId });
 
-  emitToJob(String(assignment._id), 'assignment-created', {
-    assignmentId: String(assignment._id),
-    jobId: job.id,
+  emitToJob(assignmentIdStr, 'assignment-created', {
+    assignmentId: assignmentIdStr,
+    jobId,
   });
 
   res.status(201).json({
     success: true,
     assignmentId: assignment._id,
-    jobId: job.id,
+    jobId,
   });
 };
 
@@ -110,23 +157,18 @@ export const regenerateAssignment = async (req: Request, res: Response): Promise
 
   await Assignment.findByIdAndUpdate(id, { status: 'pending' });
 
-  const job = await questionGenerationQueue.add(
-    'generate-questions',
-    {
-      assignmentId: id,
-      config: {
-        title: assignment.title,
-        subject: assignment.subject,
-        dueDate: assignment.dueDate.toISOString(),
-        questionTypes: assignment.questionTypes as ('MCQ' | 'Short Answer' | 'Long Answer')[],
-        numberOfQuestions: assignment.numberOfQuestions,
-        marksPerQuestion: assignment.marksPerQuestion,
-        additionalInstructions: assignment.additionalInstructions,
-        fileId: assignment.fileId,
-      },
-    },
-    { jobId: `assignment-${id}-regen-${Date.now()}` }
-  );
+  const jobId = `job-${Date.now()}`;
+  
+  processGenerationAsync(id, {
+    title: assignment.title,
+    subject: assignment.subject,
+    dueDate: assignment.dueDate.toISOString(),
+    questionTypes: assignment.questionTypes,
+    numberOfQuestions: assignment.numberOfQuestions,
+    marksPerQuestion: assignment.marksPerQuestion,
+    additionalInstructions: assignment.additionalInstructions,
+    fileId: assignment.fileId,
+  });
 
-  res.json({ success: true, jobId: job.id });
+  res.json({ success: true, jobId });
 };
