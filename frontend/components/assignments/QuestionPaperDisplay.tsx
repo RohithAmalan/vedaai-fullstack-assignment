@@ -21,9 +21,6 @@ export default function QuestionPaperDisplay({ paper, assignmentTitle }: Questio
           <p className="text-[19px] font-semibold text-gray-800">
             Subject: {metadata.subject || 'English'}
           </p>
-          <p className="text-[19px] font-semibold text-gray-800">
-            Class: 5th
-          </p>
         </div>
 
         {/* Info Row: Time & Marks */}
@@ -48,7 +45,8 @@ export default function QuestionPaperDisplay({ paper, assignmentTitle }: Questio
             <div className="flex-1 border-b border-gray-900 pb-0.5 ml-1"></div>
           </div>
           <div className="flex items-end gap-1 w-full max-w-[420px]">
-            <span>Class: 5th</span>
+            <span>Class:</span>
+            <div className="w-16 border-b border-gray-900 pb-0.5 ml-1"></div>
             <span className="ml-4">Section:</span>
             <div className="flex-1 border-b border-gray-900 pb-0.5 ml-1"></div>
           </div>
