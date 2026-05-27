@@ -22,6 +22,9 @@ export const parseGroqResponse = (content: string): GeneratedPaper => {
     throw new Error('Invalid response: missing metadata');
   }
 
+  let calculatedTotalMarks = 0;
+  let calculatedTotalQuestions = 0;
+
   parsed.sections = parsed.sections.map((section, sIdx) => ({
     sectionLabel: section.sectionLabel || `Section ${String.fromCharCode(65 + sIdx)}`,
     title: section.title || 'Questions',
@@ -37,11 +40,15 @@ export const parseGroqResponse = (content: string): GeneratedPaper => {
         qType = 'Short Answer';
       }
 
+      const marks = q.marks || 1;
+      calculatedTotalMarks += marks;
+      calculatedTotalQuestions += 1;
+
       return {
         questionNumber: q.questionNumber || qIdx + 1,
         questionText: q.questionText || '',
         difficulty: (['Easy', 'Medium', 'Hard'].includes(q.difficulty) ? q.difficulty : 'Medium') as 'Easy' | 'Medium' | 'Hard',
-        marks: q.marks || 1,
+        marks: marks,
         type: qType,
         options: q.options || [],
       };
@@ -49,6 +56,10 @@ export const parseGroqResponse = (content: string): GeneratedPaper => {
   }));
 
   parsed.studentInfo = parsed.studentInfo || { name: '', rollNumber: '', section: '' };
+  
+  parsed.metadata.totalMarks = calculatedTotalMarks;
+  parsed.metadata.totalQuestions = calculatedTotalQuestions;
+  parsed.metadata.estimatedTime = calculatedTotalQuestions * 2;
 
   return parsed;
 };
