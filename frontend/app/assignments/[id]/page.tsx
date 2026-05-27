@@ -129,6 +129,8 @@ export default function AssignmentOutputPage() {
                     {regenerating ? 'Regenerating...' : 'Regenerate'}
                   </button>
                 </div>
+              </div>
+
               {/* White Question Paper */}
               <QuestionPaperDisplay 
                 paper={generatedPaper} 
