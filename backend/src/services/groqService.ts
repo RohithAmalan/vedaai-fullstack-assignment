@@ -23,7 +23,7 @@ export const generateQuestionPaper = async (
 
   const attempt = async (): Promise<GeneratedPaper> => {
     const completion = await groq.chat.completions.create({
-      model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
+      model: process.env.GROQ_MODEL || 'llama3-8b-8192',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: userPrompt },
