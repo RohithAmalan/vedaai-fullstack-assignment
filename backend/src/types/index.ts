@@ -49,7 +49,6 @@ export interface AssignmentConfig {
   numberOfQuestions: number;
   marksPerQuestion: number;
   additionalInstructions?: string;
-  classLevel?: string;
   fileId?: string;
 }
 

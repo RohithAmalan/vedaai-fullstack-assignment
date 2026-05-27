@@ -5,10 +5,9 @@ import { GeneratedPaper } from '@/types/question.types';
 interface QuestionPaperDisplayProps {
   paper: GeneratedPaper;
   assignmentTitle?: string;
-  classLevel?: string;
 }
 
-export default function QuestionPaperDisplay({ paper, assignmentTitle, classLevel }: QuestionPaperDisplayProps) {
+export default function QuestionPaperDisplay({ paper, assignmentTitle }: QuestionPaperDisplayProps) {
   const { studentInfo, sections, metadata } = paper;
 
   return (
@@ -22,11 +21,9 @@ export default function QuestionPaperDisplay({ paper, assignmentTitle, classLeve
           <p className="text-[19px] font-semibold text-gray-800">
             Subject: {metadata.subject || 'English'}
           </p>
-          {classLevel && (
-            <p className="text-[19px] font-semibold text-gray-800">
-              Class: {classLevel}
-            </p>
-          )}
+          <p className="text-[19px] font-semibold text-gray-800">
+            Class: 5th
+          </p>
         </div>
 
         {/* Info Row: Time & Marks */}
@@ -51,14 +48,7 @@ export default function QuestionPaperDisplay({ paper, assignmentTitle, classLeve
             <div className="flex-1 border-b border-gray-900 pb-0.5 ml-1"></div>
           </div>
           <div className="flex items-end gap-1 w-full max-w-[420px]">
-            {classLevel ? (
-              <span>Class: {classLevel}</span>
-            ) : (
-              <>
-                <span>Class:</span>
-                <div className="w-16 border-b border-gray-900 pb-0.5 ml-1"></div>
-              </>
-            )}
+            <span>Class: 5th</span>
             <span className="ml-4">Section:</span>
             <div className="flex-1 border-b border-gray-900 pb-0.5 ml-1"></div>
           </div>

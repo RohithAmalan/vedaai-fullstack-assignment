@@ -135,7 +135,6 @@ export default function AssignmentOutputPage() {
               <QuestionPaperDisplay 
                 paper={generatedPaper} 
                 assignmentTitle={assignmentTitle} 
-                classLevel={currentAssignment?.classLevel} 
               />
 
             </div>

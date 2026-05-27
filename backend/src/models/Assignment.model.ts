@@ -9,7 +9,6 @@ export interface IAssignment extends Document {
   numberOfQuestions: number;
   marksPerQuestion: number;
   additionalInstructions?: string;
-  classLevel?: string;
   fileId?: string;
   filePath?: string;
   status: 'pending' | 'processing' | 'completed' | 'failed';
@@ -27,7 +26,6 @@ const AssignmentSchema = new Schema<IAssignment>(
     numberOfQuestions: { type: Number, required: true, min: 1 },
     marksPerQuestion: { type: Number, required: true, min: 1 },
     additionalInstructions: { type: String, trim: true },
-    classLevel: { type: String, trim: true },
     fileId: { type: String },
     filePath: { type: String },
     status: {

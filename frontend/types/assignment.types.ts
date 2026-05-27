@@ -10,7 +10,6 @@ export interface AssignmentFormData {
   numberOfQuestions: number;
   marksPerQuestion: number;
   additionalInstructions?: string;
-  classLevel?: string;
   fileId?: string;
 }
 
@@ -23,7 +22,6 @@ export interface Assignment {
   numberOfQuestions: number;
   marksPerQuestion: number;
   additionalInstructions?: string;
-  classLevel?: string;
   fileId?: string;
   status: AssignmentStatus;
   jobId?: string;

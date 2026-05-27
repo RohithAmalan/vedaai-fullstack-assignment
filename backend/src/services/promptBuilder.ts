@@ -15,7 +15,6 @@ ${fileText ? 'CRITICAL INSTRUCTION: You MUST generate all questions STRICTLY bas
 
 Subject: ${config.subject}
 Title: ${config.title}
-${config.classLevel ? `Class Level: ${config.classLevel}` : ''}
 Total Questions: ${config.numberOfQuestions}
 Question Types: ${config.questionTypes.join(', ')}
 Sections: ${sections.join(', ')}
@@ -24,7 +23,8 @@ ${config.additionalInstructions ? `Additional Instructions: ${config.additionalI
 ${contextBlock}
 
 CRITICAL INSTRUCTION FOR MARKS:
-Check the "Additional Instructions" above to see the exact number of marks assigned to each question type. You MUST assign the correct marks to each question, and calculate the totalMarks accordingly.
+Check the "Additional Instructions" above to see the exact number of marks assigned to each question type. You MUST assign the correct marks to each question.
+Then, you MUST mathematically sum the "marks" of every single question and put that exact sum in "metadata.totalMarks".
 
 Return ONLY a valid JSON object in EXACTLY this structure. No markdown. No explanation. No code blocks. Just raw JSON:
 
@@ -53,7 +53,7 @@ Return ONLY a valid JSON object in EXACTLY this structure. No markdown. No expla
   ],
   "metadata": {
     "totalQuestions": ${config.numberOfQuestions},
-    "totalMarks": 100,
+    "totalMarks": <SUM_OF_ALL_QUESTION_MARKS>,
     "estimatedTime": ${config.numberOfQuestions * 2},
     "subject": "${config.subject}"
   }
