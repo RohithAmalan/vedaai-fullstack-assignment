@@ -59,7 +59,9 @@ export const parseGroqResponse = (content: string): GeneratedPaper => {
   
   parsed.metadata.totalMarks = calculatedTotalMarks;
   parsed.metadata.totalQuestions = calculatedTotalQuestions;
-  parsed.metadata.estimatedTime = calculatedTotalQuestions * 2;
+  
+  const parsedTime = parseInt(String(parsed.metadata.estimatedTime).replace(/\D/g, ''), 10);
+  parsed.metadata.estimatedTime = !isNaN(parsedTime) && parsedTime > 0 ? parsedTime : calculatedTotalQuestions * 2;
 
   return parsed;
 };

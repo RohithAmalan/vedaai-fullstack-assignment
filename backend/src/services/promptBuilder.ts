@@ -22,8 +22,9 @@ Difficulty Distribution: 30% Easy, 40% Medium, 30% Hard
 ${config.additionalInstructions ? `Additional Instructions: ${config.additionalInstructions}` : ''}
 ${contextBlock}
 
-CRITICAL INSTRUCTION FOR MARKS:
-Check the "Additional Instructions" above to see the exact number of marks assigned to each question type. You MUST assign the correct marks to each question.
+CRITICAL INSTRUCTION FOR MARKS AND TIME:
+Check the "Additional Instructions" above. If a specific total time limit (e.g. 3 hours, 60 mins) is mentioned, you MUST set "metadata.estimatedTime" to exactly that time in minutes (e.g. 180, 60). If no time is mentioned, set it to ${config.numberOfQuestions * 2}.
+You MUST assign the correct marks to each question as specified in the instructions.
 Then, you MUST mathematically sum the "marks" of every single question and put that exact sum in "metadata.totalMarks".
 
 Return ONLY a valid JSON object in EXACTLY this structure. No markdown. No explanation. No code blocks. Just raw JSON:
@@ -54,7 +55,7 @@ Return ONLY a valid JSON object in EXACTLY this structure. No markdown. No expla
   "metadata": {
     "totalQuestions": ${config.numberOfQuestions},
     "totalMarks": <SUM_OF_ALL_QUESTION_MARKS>,
-    "estimatedTime": ${config.numberOfQuestions * 2},
+    "estimatedTime": <TIME_IN_MINUTES>,
     "subject": "${config.subject}"
   }
 }`;
