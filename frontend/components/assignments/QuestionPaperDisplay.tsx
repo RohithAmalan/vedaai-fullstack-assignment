@@ -83,9 +83,14 @@ export default function QuestionPaperDisplay({ paper, assignmentTitle }: Questio
                       <p className="flex-1">
                         {q.questionNumber}. {q.questionText}
                       </p>
-                      <span className="text-[14px] font-medium italic text-gray-600 mt-[1px]">
-                        [{q.difficulty}]
-                      </span>
+                      <div className="flex flex-col items-end">
+                        <span className="text-[14px] font-medium italic text-gray-600">
+                          [{q.difficulty}]
+                        </span>
+                        <span className="text-[13px] font-bold text-gray-800">
+                          ({q.marks} Mark{q.marks > 1 ? 's' : ''})
+                        </span>
+                      </div>
                     </div>
                     {/* MCQ Options (if any) */}
                     {q.type === 'MCQ' && q.options && q.options.length > 0 && (
