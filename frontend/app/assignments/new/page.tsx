@@ -293,7 +293,7 @@ export default function NewAssignmentPage() {
                     </svg>
                     <div className="text-center">
                       <p className="text-[14px] font-semibold text-gray-800">Choose a file or drag &amp; drop it here</p>
-                      <p className="text-[12px] text-gray-400 mt-1">JPEG, PNG, upto 10MB</p>
+                      <p className="text-[12px] text-gray-400 mt-1">PDF, TXT, JPEG, PNG, upto 10MB</p>
                     </div>
                     <button
                       type="button"
