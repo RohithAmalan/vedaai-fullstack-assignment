@@ -15,12 +15,9 @@ const server = http.createServer(app);
 
 initSocket(server);
 
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000').split(',').map(o => o.trim());
-
 app.use(cors({
-  origin: allowedOrigins,
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
 }));
 
 app.use(express.json({ limit: '10mb' }));
