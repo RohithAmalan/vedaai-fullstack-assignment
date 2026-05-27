@@ -157,13 +157,12 @@ Visit [http://localhost:3000](http://localhost:3000)
 3. Add the required environment variables (`MONGODB_URI`, `REDIS_URL`, `GROQ_API_KEY`, etc.).
 4. For MongoDB Atlas, ensure you append `&authSource=admin` to your connection string to prevent authentication errors, and ensure your IP is whitelisted.
 
-### Frontend (Vercel)
+### Frontend (Railway)
 
-1. Create a new project on **Vercel** and connect your GitHub repository.
-2. Set the Framework Preset to **Next.js**.
-3. Set the **Root Directory** to `frontend`.
-4. Add the following Environment Variables:
+1. In the same Railway project, click **+ New** and connect your GitHub repository again.
+2. Set the **Root Directory** to `/frontend`.
+3. Add the following Environment Variables:
    - `NEXT_PUBLIC_API_URL` (Your deployed backend URL)
    - `NEXT_PUBLIC_WS_URL` (Your deployed backend URL)
-5. Deploy. Vercel automatically handles Next.js optimization and caching.
+4. Generate a public domain in the Networking settings.
 
