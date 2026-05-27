@@ -147,3 +147,23 @@ Visit [http://localhost:3000](http://localhost:3000)
 |---|---|---|
 | `NEXT_PUBLIC_API_URL` | `http://localhost:5000` | Backend API base URL |
 | `NEXT_PUBLIC_WS_URL` | `http://localhost:5000` | WebSocket server URL |
+
+## Deployment
+
+### Backend (Railway / Render)
+
+1. Connect your GitHub repository to a service like **Railway**.
+2. Set the Root Directory to `/backend`.
+3. Add the required environment variables (`MONGODB_URI`, `REDIS_URL`, `GROQ_API_KEY`, etc.).
+4. For MongoDB Atlas, ensure you append `&authSource=admin` to your connection string to prevent authentication errors, and ensure your IP is whitelisted.
+
+### Frontend (Vercel)
+
+1. Create a new project on **Vercel** and connect your GitHub repository.
+2. Set the Framework Preset to **Next.js**.
+3. Set the **Root Directory** to `frontend`.
+4. Add the following Environment Variables:
+   - `NEXT_PUBLIC_API_URL` (Your deployed backend URL)
+   - `NEXT_PUBLIC_WS_URL` (Your deployed backend URL)
+5. Deploy. Vercel automatically handles Next.js optimization and caching.
+
