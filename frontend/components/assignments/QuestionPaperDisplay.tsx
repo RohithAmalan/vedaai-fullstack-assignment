@@ -93,16 +93,8 @@ export default function QuestionPaperDisplay({ paper, assignmentTitle, classLeve
                       <p className="flex-1">
                         {q.questionNumber}. {q.questionText}
                       </p>
-                      <span
-                        className={`mt-1 px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wide ${
-                          q.difficulty === 'Easy'
-                            ? 'bg-green-100 text-green-700'
-                            : q.difficulty === 'Medium'
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-red-100 text-red-700'
-                        }`}
-                      >
-                        {q.difficulty}
+                      <span className="text-[14px] font-medium italic text-gray-600 mt-[1px]">
+                        [{q.difficulty}]
                       </span>
                     </div>
                     {/* MCQ Options (if any) */}
