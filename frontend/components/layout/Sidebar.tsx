@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAssignmentStore } from '@/store/useAssignmentStore';
+import { useSettingsStore } from '@/store/useSettingsStore';
 import Logo from '@/components/ui/Logo';
 
 const navItems = [
@@ -25,6 +26,7 @@ const navItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const assignments = useAssignmentStore((s) => s.assignments);
+  const { schoolName, schoolAddress } = useSettingsStore();
   const assignmentCount = assignments.length;
 
   // "Assignments" nav item is active whenever we're in /assignments/**
@@ -100,8 +102,8 @@ export default function Sidebar() {
             <span className="text-xl">🏫</span>
           </div>
           <div className="min-w-0">
-            <p className="text-[13px] font-bold text-gray-900 truncate">Delhi Public School</p>
-            <p className="text-[11px] text-gray-400 truncate">Bokaro Steel City</p>
+            <p className="text-[13px] font-bold text-gray-900 truncate">{schoolName || 'Your School'}</p>
+            <p className="text-[11px] text-gray-400 truncate">{schoolAddress || 'School Branch'}</p>
           </div>
         </div>
       </div>

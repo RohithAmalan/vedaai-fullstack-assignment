@@ -1,6 +1,7 @@
 'use client';
 
 import { GeneratedPaper } from '@/types/question.types';
+import { useSettingsStore } from '@/store/useSettingsStore';
 
 interface QuestionPaperDisplayProps {
   paper: GeneratedPaper;
@@ -9,6 +10,7 @@ interface QuestionPaperDisplayProps {
 
 export default function QuestionPaperDisplay({ paper, assignmentTitle }: QuestionPaperDisplayProps) {
   const { studentInfo, sections, metadata } = paper;
+  const { schoolName, schoolAddress } = useSettingsStore();
 
   return (
     <div className="bg-white rounded-[32px] shadow-xl w-full max-w-4xl mx-auto overflow-hidden mt-2" id="question-paper">
@@ -16,7 +18,7 @@ export default function QuestionPaperDisplay({ paper, assignmentTitle }: Questio
         {/* Document Header */}
         <div className="text-center mb-10 space-y-2">
           <h1 className="text-[26px] font-bold tracking-tight text-gray-900">
-            Delhi Public School, Sector-4, Bokaro
+            {schoolName}{schoolAddress ? `, ${schoolAddress}` : ''}
           </h1>
           <p className="text-[19px] font-semibold text-gray-800">
             Subject: {metadata.subject || 'English'}
