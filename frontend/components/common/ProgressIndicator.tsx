@@ -8,16 +8,20 @@ interface ProgressIndicatorProps {
   className?: string;
 }
 
-const statusMessages: Record<string, string> = {
-  generating: 'Generating your question paper...',
-  completed: 'Question paper ready!',
-  failed: 'Generation failed. Please try again.',
+const getStatusMessage = (status: string, progress: number): string => {
+  if (status === 'completed') return 'Question paper ready!';
+  if (status === 'failed') return 'Generation failed. Please try again.';
+  
+  if (progress < 30) return 'Analyzing your instructions...';
+  if (progress < 70) return 'Crafting questions using AI...';
+  if (progress < 90) return 'Formatting question paper...';
+  return 'Finalizing details...';
 };
 
 const progressSteps = [10, 30, 70, 100];
 
 export default function ProgressIndicator({ progress, status, className }: ProgressIndicatorProps) {
-  const message = statusMessages[status] || 'Processing...';
+  const message = getStatusMessage(status, progress);
 
   return (
     <div className={cn('flex flex-col items-center justify-center h-full w-full py-16', className)}>
