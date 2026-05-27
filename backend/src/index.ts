@@ -6,9 +6,8 @@ import { connectDB } from './config/db';
 import { initSocket } from './socket/socketServer';
 import assignmentRoutes from './routes/assignments.routes';
 import uploadRoutes from './routes/upload.routes';
-import dotenv from 'dotenv';
-dotenv.config();
 
+dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
