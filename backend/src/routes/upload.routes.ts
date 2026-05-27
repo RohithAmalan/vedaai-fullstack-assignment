@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
-import { uploadFile, deleteFile } from '../controllers/upload.controller';
+import { uploadFile, deleteFile, uploadAudio } from '../controllers/upload.controller';
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
@@ -14,24 +14,25 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (_req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  const allowed = ['.pdf', '.txt', '.doc', '.docx'];
+  const allowed = ['.pdf', '.txt', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.webm'];
   const ext = path.extname(file.originalname).toLowerCase();
-  if (allowed.includes(ext)) {
+  if (allowed.includes(ext) || file.mimetype.startsWith('audio/')) {
     cb(null, true);
   } else {
-    cb(new Error('Only PDF and text files are allowed'));
+    cb(new Error('File type not allowed'));
   }
 };
 
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB max for audio
 });
 
 const router = Router();
 
 router.post('/', upload.single('file'), uploadFile);
+router.post('/audio', upload.single('audio'), uploadAudio);
 router.delete('/:fileId', deleteFile);
 
 export default router;

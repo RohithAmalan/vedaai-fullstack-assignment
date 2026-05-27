@@ -5,69 +5,105 @@ import { Plus } from 'lucide-react';
 
 export default function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-      {/* Illustration — matches Figma */}
-      <div className="relative w-72 h-60 mb-8 select-none">
-        {/* Large lavender background circle */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 rounded-full bg-[#E8E6F0]" />
+    <div className="flex flex-col items-center justify-center py-10 px-6 text-center w-full">
+      {/* Illustration — pixel-perfect Figma match */}
+      <div className="relative w-[300px] h-[260px] mb-6 select-none">
 
-        {/* Back document card (rotated) */}
-        <div className="absolute top-[38px] left-[64px] w-[108px] h-[128px] bg-[#F0EFF8] rounded-xl border border-[#DDD9F0] rotate-[-6deg] shadow-sm" />
+        {/* Large lavender/mauve background circle */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] w-[220px] h-[220px] rounded-full bg-[#E2DFEF]" />
 
-        {/* Front document card */}
-        <div className="absolute top-[30px] left-[72px] w-[108px] h-[128px] bg-white rounded-xl border border-gray-200 shadow-md flex flex-col gap-2 pt-5 px-4">
-          <div className="h-[10px] bg-gray-800 rounded-full w-3/4" />
-          <div className="h-[7px] bg-gray-200 rounded-full w-full mt-1" />
-          <div className="h-[7px] bg-gray-200 rounded-full w-5/6" />
-          <div className="h-[7px] bg-gray-200 rounded-full w-4/6" />
-          <div className="h-[7px] bg-gray-200 rounded-full w-5/6" />
-          <div className="h-[7px] bg-gray-200 rounded-full w-3/6" />
+        {/* Back document (rotated left, behind) */}
+        <div className="absolute top-[32px] left-[60px] w-[110px] h-[135px] bg-[#EDEAF7] rounded-2xl border border-[#D5D0ED] rotate-[-7deg] shadow-sm" />
+
+        {/* Front document (white card) */}
+        <div className="absolute top-[24px] left-[70px] w-[110px] h-[135px] bg-white rounded-2xl border border-gray-200 shadow-md flex flex-col gap-[5px] pt-5 px-4">
+          {/* Top black bar (title) */}
+          <div className="h-[9px] bg-gray-800 rounded-full w-[70%]" />
+          {/* Lines */}
+          <div className="h-[6px] bg-gray-200 rounded-full w-full mt-1.5" />
+          <div className="h-[6px] bg-gray-200 rounded-full w-[85%]" />
+          <div className="h-[6px] bg-gray-200 rounded-full w-[65%]" />
+          <div className="h-[6px] bg-gray-200 rounded-full w-[80%]" />
+          <div className="h-[6px] bg-gray-200 rounded-full w-[55%]" />
         </div>
 
-        {/* Floating mini card top-right */}
-        <div className="absolute top-[22px] right-[40px] w-[52px] h-[26px] bg-gray-200 rounded-lg flex items-center gap-1.5 px-2">
-          <div className="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0" />
-          <div className="h-2 bg-gray-400 rounded-full flex-1" />
+        {/* Floating mini pill card top-right of document */}
+        <div className="absolute top-[18px] right-[44px] w-[56px] h-[22px] bg-gray-200 rounded-full flex items-center gap-1.5 px-2">
+          <div className="w-[10px] h-[10px] rounded-full bg-gray-400 flex-shrink-0" />
+          <div className="h-[5px] bg-gray-400 rounded-full flex-1" />
         </div>
 
-        {/* Magnifying glass */}
-        <div className="absolute bottom-[14px] right-[24px] w-[90px] h-[90px]">
-          <div className="absolute inset-0 rounded-full border-[6px] border-[#A89EC8] bg-[#EAE8F4]/60" />
+        {/* Magnifying glass circle — bottom right */}
+        <div className="absolute bottom-[10px] right-[20px] w-[96px] h-[96px]">
+          {/* Glass circle */}
+          <div className="absolute inset-0 rounded-full border-[7px] border-[#9B94C4] bg-[#E4E1F5]/70" />
+          {/* Red X inside */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <line x1="10" y1="10" x2="26" y2="26" stroke="#EF4444" strokeWidth="5" strokeLinecap="round" />
-              <line x1="26" y1="10" x2="10" y2="26" stroke="#EF4444" strokeWidth="5" strokeLinecap="round" />
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <line x1="11" y1="11" x2="27" y2="27" stroke="#EF4444" strokeWidth="5.5" strokeLinecap="round" />
+              <line x1="27" y1="11" x2="11" y2="27" stroke="#EF4444" strokeWidth="5.5" strokeLinecap="round" />
             </svg>
           </div>
-          <div className="absolute bottom-[-12px] right-[-10px] w-[28px] h-[8px] bg-[#A89EC8] rounded-full rotate-[-40deg] origin-top-left" />
+          {/* Handle stick */}
+          <div
+            className="absolute bg-[#9B94C4] rounded-full"
+            style={{
+              width: '30px',
+              height: '9px',
+              bottom: '-13px',
+              right: '-11px',
+              transform: 'rotate(-42deg)',
+              transformOrigin: 'top left',
+            }}
+          />
         </div>
 
-        {/* Blue dot */}
-        <div className="absolute top-[80px] right-[14px] w-3 h-3 rounded-full bg-[#60A5FA]" />
+        {/* Blue dot — right side middle */}
+        <div className="absolute top-[72px] right-[12px] w-[13px] h-[13px] rounded-full bg-[#60A5FA]" />
 
-        {/* Sparkle bottom-left */}
-        <svg className="absolute bottom-[48px] left-[24px]" width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="#60A5FA" />
+        {/* Blue sparkle star — bottom left */}
+        <svg className="absolute bottom-[44px] left-[22px]" width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path
+            d="M11 0 L12.8 9.2 L22 11 L12.8 12.8 L11 22 L9.2 12.8 L0 11 L9.2 9.2 Z"
+            fill="#60A5FA"
+          />
         </svg>
 
-        {/* Pen squiggle top-left */}
-        <svg className="absolute top-[32px] left-[28px]" width="48" height="40" viewBox="0 0 48 40" fill="none">
-          <path d="M44 2 C36 2 8 18 4 36" stroke="#1F2937" strokeWidth="3" strokeLinecap="round" fill="none" />
-          <circle cx="44" cy="2" r="3" fill="#1F2937" />
+        {/* Pen / squiggle top-left */}
+        <svg
+          className="absolute top-[26px] left-[22px]"
+          width="50"
+          height="44"
+          viewBox="0 0 50 44"
+          fill="none"
+        >
+          {/* Curved stroke */}
+          <path
+            d="M46 3 C38 3 8 20 4 40"
+            stroke="#1F2937"
+            strokeWidth="3"
+            strokeLinecap="round"
+            fill="none"
+          />
+          {/* Pen nib dot */}
+          <circle cx="46" cy="3" r="3.5" fill="#1F2937" />
         </svg>
       </div>
 
-      <h3 className="text-[17px] font-bold text-gray-900 mb-2">No assignments yet</h3>
-      <p className="text-sm text-gray-500 max-w-sm mb-7 leading-relaxed">
-        Create your first assignment to start collecting and grading student submissions.
-        You can set up rubrics, define marking criteria, and let AI assist with grading.
+      {/* Text */}
+      <h2 className="text-[18px] font-bold text-gray-900 mb-2.5">No assignments yet</h2>
+      <p className="text-[13px] text-gray-500 max-w-[340px] mb-8 leading-[1.65]">
+        Create your first assignment to start collecting and grading student
+        submissions. You can set up rubrics, define marking criteria, and let AI
+        assist with grading.
       </p>
 
+      {/* CTA button — dark pill */}
       <Link
         href="/assignments/new"
-        className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-full transition-colors shadow-sm"
+        className="inline-flex items-center gap-2 px-7 py-3.5 bg-gray-900 hover:bg-gray-800 text-white text-[13.5px] font-semibold rounded-full transition-colors shadow-lg"
       >
-        <Plus size={16} strokeWidth={2.5} />
+        <Plus size={15} strokeWidth={2.5} />
         Create Your First Assignment
       </Link>
     </div>

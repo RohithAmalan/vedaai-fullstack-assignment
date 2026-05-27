@@ -10,5 +10,14 @@ export const extractTextFromFile = async (filePath: string): Promise<string> => 
     return data.text;
   }
 
-  return buffer.toString('utf-8');
+  if (['txt', 'md', 'csv'].includes(ext || '')) {
+    return buffer.toString('utf-8');
+  }
+
+  // For images, we would need an OCR package or Vision model
+  if (['jpg', 'jpeg', 'png'].includes(ext || '')) {
+    return "Image uploaded (Text extraction requires OCR)";
+  }
+
+  return "";
 };

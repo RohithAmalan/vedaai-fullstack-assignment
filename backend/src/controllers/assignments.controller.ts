@@ -19,6 +19,7 @@ export const createAssignment = async (req: Request, res: Response): Promise<voi
     marksPerQuestion: Number(marksPerQuestion),
     additionalInstructions,
     fileId,
+    filePath: fileId ? `uploads/${fileId}` : undefined,
     status: 'pending',
   });
 
@@ -69,13 +70,28 @@ export const getAssignmentStatus = async (req: Request, res: Response): Promise<
 export const getAssignmentPaper = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const paper = await GeneratedPaper.findOne({ assignmentId: id }).lean();
+  const assignment = await Assignment.findById(id).lean();
 
   if (!paper) {
     res.status(404).json({ success: false, message: 'Paper not found' });
     return;
   }
 
-  res.json({ success: true, paper });
+  res.json({ success: true, paper, assignment });
+};
+
+export const deleteAssignment = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const assignment = await Assignment.findByIdAndDelete(id);
+
+  if (!assignment) {
+    res.status(404).json({ success: false, message: 'Assignment not found' });
+    return;
+  }
+
+  await GeneratedPaper.deleteMany({ assignmentId: id });
+
+  res.json({ success: true, message: 'Assignment deleted' });
 };
 
 export const getAllAssignments = async (_req: Request, res: Response): Promise<void> => {

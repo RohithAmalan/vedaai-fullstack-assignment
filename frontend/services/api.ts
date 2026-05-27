@@ -7,7 +7,7 @@ import {
 } from '@/types/api.types';
 import { AssignmentFormData } from '@/types/assignment.types';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 const request = async <T>(path: string, options?: RequestInit): Promise<T> => {
   const res = await fetch(`${BASE_URL}${path}`, options);
@@ -42,3 +42,6 @@ export const getAssignmentPaper = (id: string): Promise<AssignmentPaperResponse>
 
 export const regenerateAssignment = (id: string): Promise<CreateAssignmentResponse> =>
   request<CreateAssignmentResponse>(`/api/assignments/${id}/regenerate`, { method: 'POST' });
+
+export const deleteAssignment = (id: string): Promise<{ success: boolean; message: string }> =>
+  request<{ success: boolean; message: string }>(`/api/assignments/${id}`, { method: 'DELETE' });

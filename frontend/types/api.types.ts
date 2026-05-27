@@ -30,6 +30,7 @@ export interface AssignmentStatusResponse {
 export interface AssignmentPaperResponse {
   success: boolean;
   paper: GeneratedPaper;
+  assignment?: Assignment;
 }
 
 export interface AllAssignmentsResponse {

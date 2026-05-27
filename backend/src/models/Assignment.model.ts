@@ -22,7 +22,7 @@ const AssignmentSchema = new Schema<IAssignment>(
     title: { type: String, required: true, trim: true },
     subject: { type: String, required: true, trim: true },
     dueDate: { type: Date, required: true },
-    questionTypes: [{ type: String, enum: ['MCQ', 'Short Answer', 'Long Answer'] }],
+    questionTypes: [{ type: String }],
     numberOfQuestions: { type: Number, required: true, min: 1 },
     marksPerQuestion: { type: Number, required: true, min: 1 },
     additionalInstructions: { type: String, trim: true },

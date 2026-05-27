@@ -1,4 +1,4 @@
-export type QuestionType = 'MCQ' | 'Short Answer' | 'Long Answer';
+export type QuestionType = string;
 export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 export type AssignmentStatus = 'pending' | 'processing' | 'completed' | 'failed';
 

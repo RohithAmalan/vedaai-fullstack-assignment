@@ -10,17 +10,20 @@ export const buildPrompt = (config: AssignmentConfig, fileText?: string): string
     ? `\nSource Material:\n${fileText.slice(0, 3000)}\n`
     : '';
 
-  return `Generate a complete question paper for the following requirements:
+  return `Generate a complete question paper for the following requirements.
+${fileText ? 'CRITICAL INSTRUCTION: You MUST generate all questions STRICTLY based on the provided Source Material below. Do not include concepts or questions outside of this context.' : ''}
 
 Subject: ${config.subject}
 Title: ${config.title}
 Total Questions: ${config.numberOfQuestions}
-Marks per Question: ${config.marksPerQuestion}
 Question Types: ${config.questionTypes.join(', ')}
 Sections: ${sections.join(', ')}
 Difficulty Distribution: 40% Easy, 40% Medium, 20% Hard
 ${config.additionalInstructions ? `Additional Instructions: ${config.additionalInstructions}` : ''}
 ${contextBlock}
+
+CRITICAL INSTRUCTION FOR MARKS:
+Check the "Additional Instructions" above to see the exact number of marks assigned to each question type. You MUST assign the correct marks to each question, and calculate the totalMarks accordingly.
 
 Return ONLY a valid JSON object in EXACTLY this structure. No markdown. No explanation. No code blocks. Just raw JSON:
 
@@ -34,13 +37,13 @@ Return ONLY a valid JSON object in EXACTLY this structure. No markdown. No expla
     {
       "sectionLabel": "Section A",
       "title": "Multiple Choice Questions",
-      "instruction": "Attempt all questions. Each question carries ${config.marksPerQuestion} marks.",
+      "instruction": "Attempt all questions. Each question carries <X> marks.",
       "questions": [
         {
           "questionNumber": 1,
           "questionText": "Question text here",
           "difficulty": "Easy",
-          "marks": ${config.marksPerQuestion},
+          "marks": 2,
           "type": "MCQ",
           "options": ["Option A", "Option B", "Option C", "Option D"]
         }
@@ -49,7 +52,7 @@ Return ONLY a valid JSON object in EXACTLY this structure. No markdown. No expla
   ],
   "metadata": {
     "totalQuestions": ${config.numberOfQuestions},
-    "totalMarks": ${config.numberOfQuestions * config.marksPerQuestion},
+    "totalMarks": 100,
     "estimatedTime": ${config.numberOfQuestions * 2},
     "subject": "${config.subject}"
   }

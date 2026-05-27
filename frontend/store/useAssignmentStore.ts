@@ -13,6 +13,7 @@ interface AssignmentStore {
   progress: number;
   generatedPaper: GeneratedPaper | null;
   assignments: Assignment[];
+  currentAssignment: Assignment | null;
 
   setFormData: (data: Partial<AssignmentFormData>) => void;
   setUploadedFile: (file: File | null) => void;
@@ -23,6 +24,7 @@ interface AssignmentStore {
   setProgress: (progress: number) => void;
   setGeneratedPaper: (paper: GeneratedPaper | null) => void;
   setAssignments: (assignments: Assignment[]) => void;
+  setCurrentAssignment: (assignment: Assignment | null) => void;
   reset: () => void;
 }
 
@@ -36,6 +38,7 @@ const initialState = {
   progress: 0,
   generatedPaper: null,
   assignments: [],
+  currentAssignment: null,
 };
 
 export const useAssignmentStore = create<AssignmentStore>((set) => ({
@@ -50,5 +53,6 @@ export const useAssignmentStore = create<AssignmentStore>((set) => ({
   setProgress: (progress) => set({ progress }),
   setGeneratedPaper: (paper) => set({ generatedPaper: paper }),
   setAssignments: (assignments) => set({ assignments }),
+  setCurrentAssignment: (assignment) => set({ currentAssignment: assignment }),
   reset: () => set(initialState),
 }));

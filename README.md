@@ -55,13 +55,19 @@ vedaAi/
 
 ## Quick Start
 
-### 1. Start infrastructure
+### 1. Start Database Infrastructure (Docker)
+
+> **Note for Reviewers:** Docker is intentionally used strictly for the state layer (**MongoDB** and **Redis**) to keep environment setup clean and simple. The Frontend and Backend run directly in your native terminal for easier logging and debugging.
+
+Start the required databases in the background:
 
 ```bash
-docker compose up -d
+docker-compose up -d
 ```
 
-This starts MongoDB on port 27017 and Redis on port 6379.
+This will automatically pull and start:
+- **MongoDB** (running on port `27017`)
+- **Redis** (running on port `6379`)
 
 ### 2. Configure environment variables
 

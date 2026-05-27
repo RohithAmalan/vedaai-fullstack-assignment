@@ -5,6 +5,7 @@ import {
   getAssignmentPaper,
   getAllAssignments,
   regenerateAssignment,
+  deleteAssignment,
 } from '../controllers/assignments.controller';
 
 const router = Router();
@@ -14,5 +15,6 @@ router.get('/', getAllAssignments);
 router.get('/:id/status', getAssignmentStatus);
 router.get('/:id/paper', getAssignmentPaper);
 router.post('/:id/regenerate', regenerateAssignment);
+router.delete('/:id', deleteAssignment);
 
 export default router;

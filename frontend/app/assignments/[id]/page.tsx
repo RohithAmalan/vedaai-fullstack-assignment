@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, RefreshCw, Download } from 'lucide-react';
+import { ArrowLeft, RefreshCw } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
@@ -14,6 +14,7 @@ import { useAssignmentStore } from '@/store/useAssignmentStore';
 import { useJobProgress } from '@/hooks/useJobProgress';
 import { useToast } from '@/hooks/useToast';
 import { getAssignmentPaper, regenerateAssignment } from '@/services/api';
+import { cn } from '@/lib/utils';
 
 const PDFDownloadButton = dynamic(() => import('@/components/pdf/PDFDownloadButton'), { ssr: false });
 
@@ -30,32 +31,33 @@ export default function AssignmentOutputPage() {
     progress,
     generatedPaper,
     currentAssignmentId,
+    currentAssignment,
     setGeneratedPaper,
     setCurrentAssignmentId,
     setGenerationStatus,
     setProgress,
+    setCurrentAssignment,
   } = useAssignmentStore();
 
-  // Sync assignment id
   useEffect(() => {
     if (id && id !== currentAssignmentId) {
       setCurrentAssignmentId(id);
     }
   }, [id, currentAssignmentId, setCurrentAssignmentId]);
 
-  // Subscribe to WebSocket
   useJobProgress(id);
 
-  // When completed, fetch paper if not in store
   useEffect(() => {
     if (generationStatus === 'completed' && !generatedPaper) {
       getAssignmentPaper(id)
-        .then((res) => setGeneratedPaper(res.paper))
+        .then((res) => {
+          setGeneratedPaper(res.paper);
+          if (res.assignment) setCurrentAssignment(res.assignment);
+        })
         .catch(() => addToast('Failed to load paper', 'error'));
     }
-  }, [generationStatus, generatedPaper, id, setGeneratedPaper, addToast]);
+  }, [generationStatus, generatedPaper, id, setGeneratedPaper, setCurrentAssignment, addToast]);
 
-  // Poll status when arriving at page with pending/processing status
   useEffect(() => {
     if (generatedPaper) return;
     if (generationStatus === 'completed') return;
@@ -65,6 +67,7 @@ export default function AssignmentOutputPage() {
         const res = await getAssignmentPaper(id);
         if (res.paper) {
           setGeneratedPaper(res.paper);
+          if (res.assignment) setCurrentAssignment(res.assignment);
           setGenerationStatus('completed');
           setProgress(100);
           clearInterval(poll);
@@ -95,66 +98,88 @@ export default function AssignmentOutputPage() {
 
   const isLoading = generationStatus === 'generating' || generationStatus === 'uploading';
 
+  // For completed state, we want a dark background layout
+  if (generatedPaper) {
+    return (
+      <div className="flex min-h-screen w-full bg-[#EBEBEB] overflow-x-hidden">
+        <Sidebar />
+
+      <div className="flex-1 min-w-0 lg:ml-[290px] flex flex-col min-h-screen">
+          <TopBar title="Create New" showBack={true} />
+
+          <main className="flex-1 p-8 pb-32">
+            {/* Dark container */}
+            <div className="bg-[#374151] rounded-[32px] p-6 shadow-sm max-w-4xl mx-auto">
+              
+              {/* Header section inside dark container */}
+              <div className="mb-8 px-4 pt-2">
+                <p className="text-[15.5px] font-semibold text-white mb-6 leading-relaxed">
+                  Certainly! Here is your customized Question Paper for your {currentAssignment?.subject || 'Science'} classes on the {currentAssignment?.title || 'NCERT'} chapters:
+                </p>
+                
+                <div className="flex gap-4">
+                  <PDFDownloadButton paper={generatedPaper} title={currentAssignment?.title || assignmentTitle} />
+                  
+                  <button
+                    onClick={handleRegenerate}
+                    disabled={regenerating}
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/10 border border-white/20 text-white text-[13.5px] font-semibold hover:bg-white/20 disabled:opacity-50 transition-colors shadow-sm"
+                  >
+                    <RefreshCw size={15} className={regenerating ? 'animate-spin' : ''} strokeWidth={2.5} />
+                    {regenerating ? 'Regenerating...' : 'Regenerate'}
+                  </button>
+                </div>
+              </div>
+
+              {/* White Question Paper */}
+              <QuestionPaperDisplay paper={generatedPaper} assignmentTitle={assignmentTitle} />
+
+            </div>
+          </main>
+        </div>
+
+        <MobileNav />
+        <ToastContainer toasts={toasts} onRemove={removeToast} />
+      </div>
+    );
+  }
+
+  // Pending / Loading State
   return (
-    <div className="flex min-h-screen bg-[#F5F5F5]">
+    <div className="flex min-h-screen w-full bg-[#EBEBEB] overflow-x-hidden">
       <Sidebar />
 
-      <div className="flex-1 ml-[240px] flex flex-col min-h-screen">
+      <div className="flex-1 min-w-0 lg:ml-[290px] flex flex-col min-h-screen">
         <TopBar title="Assignment" showBack={true} />
 
         <main className="flex-1 p-6">
-          {/* Action Bar */}
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h2 className="text-xl font-bold text-gray-900">Question Paper</h2>
-              <p className="text-sm text-gray-500 mt-0.5">AI-generated assessment paper</p>
-            </div>
-
-            {generatedPaper && (
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleRegenerate}
-                  disabled={regenerating}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors"
-                >
-                  <RefreshCw size={15} className={regenerating ? 'animate-spin' : ''} />
-                  Regenerate
-                </button>
-
-                <PDFDownloadButton paper={generatedPaper} title={assignmentTitle} />
-              </div>
-            )}
+          <div className="mb-6">
+            <h2 className="text-[19px] font-bold text-gray-900">Question Paper</h2>
+            <p className="text-[13px] text-gray-500 mt-0.5">AI-generated assessment paper</p>
           </div>
 
-          {/* Content */}
-          {isLoading ? (
-            <div className="bg-white rounded-2xl border border-gray-200 min-h-[400px] flex items-center justify-center">
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 min-h-[500px] flex items-center justify-center">
+            {isLoading ? (
               <ProgressIndicator progress={progress} status={generationStatus} />
-            </div>
-          ) : generationStatus === 'failed' ? (
-            <div className="bg-white rounded-2xl border border-red-200 p-12 text-center">
-              <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-                <span className="text-red-500 text-2xl">✕</span>
+            ) : generationStatus === 'failed' ? (
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-red-500 text-2xl font-bold">✕</span>
+                </div>
+                <h3 className="text-base font-semibold text-gray-900 mb-1">Generation Failed</h3>
+                <p className="text-sm text-gray-500 mb-5">Something went wrong while generating.</p>
+                <button
+                  onClick={handleRegenerate}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-full transition-colors mx-auto"
+                >
+                  <RefreshCw size={14} />
+                  Try Again
+                </button>
               </div>
-              <h3 className="text-base font-semibold text-gray-900 mb-1">Generation Failed</h3>
-              <p className="text-sm text-gray-500 mb-5">
-                Something went wrong while generating your question paper.
-              </p>
-              <button
-                onClick={handleRegenerate}
-                className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors mx-auto"
-              >
-                <RefreshCw size={15} />
-                Try Again
-              </button>
-            </div>
-          ) : generatedPaper ? (
-            <QuestionPaperDisplay paper={generatedPaper} assignmentTitle={assignmentTitle} />
-          ) : (
-            <div className="bg-white rounded-2xl border border-gray-200 min-h-[400px] flex items-center justify-center">
+            ) : (
               <ProgressIndicator progress={progress} status="generating" />
-            </div>
-          )}
+            )}
+          </div>
         </main>
       </div>
 
