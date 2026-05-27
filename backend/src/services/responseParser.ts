@@ -26,14 +26,26 @@ export const parseGroqResponse = (content: string): GeneratedPaper => {
     sectionLabel: section.sectionLabel || `Section ${String.fromCharCode(65 + sIdx)}`,
     title: section.title || 'Questions',
     instruction: section.instruction || 'Attempt all questions',
-    questions: (section.questions || []).map((q, qIdx) => ({
-      questionNumber: q.questionNumber || qIdx + 1,
-      questionText: q.questionText || '',
-      difficulty: (['Easy', 'Medium', 'Hard'].includes(q.difficulty) ? q.difficulty : 'Medium') as 'Easy' | 'Medium' | 'Hard',
-      marks: q.marks || 1,
-      type: q.type || 'Short Answer',
-      options: q.options || [],
-    })),
+    questions: (section.questions || []).map((q, qIdx) => {
+      let qType = q.type || 'Short Answer';
+      if (typeof qType === 'string') {
+        if (qType.includes('Short')) qType = 'Short Answer';
+        else if (qType.includes('Long')) qType = 'Long Answer';
+        else if (qType.includes('MCQ') || qType.includes('Multiple')) qType = 'MCQ';
+        else if (!['MCQ', 'Short Answer', 'Long Answer'].includes(qType)) qType = 'Short Answer';
+      } else {
+        qType = 'Short Answer';
+      }
+
+      return {
+        questionNumber: q.questionNumber || qIdx + 1,
+        questionText: q.questionText || '',
+        difficulty: (['Easy', 'Medium', 'Hard'].includes(q.difficulty) ? q.difficulty : 'Medium') as 'Easy' | 'Medium' | 'Hard',
+        marks: q.marks || 1,
+        type: qType,
+        options: q.options || [],
+      };
+    }),
   }));
 
   parsed.studentInfo = parsed.studentInfo || { name: '', rollNumber: '', section: '' };
