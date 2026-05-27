@@ -40,7 +40,7 @@ vedaAi/
 | Backend | Express.js, TypeScript |
 | Database | MongoDB + Mongoose |
 | Queue | BullMQ + Redis (ioredis) |
-| AI | Groq SDK (`llama-3.3-70b-versatile`) |
+| AI | Groq SDK (`llama-3.1-8b-instant`) |
 | File processing | pdf-parse + multer |
 
 ---
