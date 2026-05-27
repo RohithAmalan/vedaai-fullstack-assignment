@@ -3,9 +3,11 @@ import multer from 'multer';
 import path from 'path';
 import { uploadFile, deleteFile, uploadAudio } from '../controllers/upload.controller';
 
+import os from 'os';
+
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
-    cb(null, path.join(process.cwd(), 'uploads'));
+    cb(null, os.tmpdir());
   },
   filename: (_req, file, cb) => {
     const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
